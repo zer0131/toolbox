@@ -367,7 +367,7 @@ func ToInts(in []interface{}) []int {
 func ToUint8(in interface{}) (ui8 uint8, err error) {
 	switch val := in.(type) {
 	case int8:
-		return int64ToUint8(int64(val)) //偷懒，TODO，更多测试
+		return int64ToUint8(int64(val))
 	case int16:
 		return int64ToUint8(int64(val))
 	case int32:

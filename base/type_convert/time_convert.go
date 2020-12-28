@@ -130,7 +130,6 @@ func StringToTime(str string, loc *time.Location) (t time.Time, err error) {
 			return
 		}
 	} else {
-		//TODO:其它兼容格式
 		err = ERROR_TIME_NOTVALID
 		return
 	}
