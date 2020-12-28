@@ -1,0 +1,15 @@
+{
+    "debug": false, 
+    "hostname": "",
+    "tags": "group=intell-logistics,project=helloworld,env=dev", 
+    "step": 60,
+    "bases":[],
+    "push": { 
+        "enabled":true,
+        "api": "http://10.188.44.6:1989/v1/push" 
+    },
+    "http": { 
+        "enabled": false,
+        "listen": "" 
+    }
+}
