@@ -9,8 +9,8 @@ import (
 
 	"github.com/go-redis/redis"
 
-	"toolbox"
-	"toolbox/stat"
+	"github.com/zer0131/toolbox"
+	"github.com/zer0131/toolbox/stat"
 )
 
 const (

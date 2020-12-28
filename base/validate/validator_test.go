@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"toolbox/log"
+	"github.com/zer0131/toolbox/log"
 )
 
 func TestCreateValidators(t *testing.T) {

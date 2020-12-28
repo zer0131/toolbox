@@ -1,19 +1,17 @@
 package header
 
 import (
-	"fmt"
-	"math/rand"
-	"strings"
-	"time"
-
 	"context"
+	"fmt"
 	"github.com/grpc-ecosystem/go-grpc-middleware"
+	"github.com/zer0131/toolbox"
+	"github.com/zer0131/toolbox/log"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/peer"
-
-	"toolbox"
-	"toolbox/log"
+	"math/rand"
+	"strings"
+	"time"
 )
 
 func createLogId() string {

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"reflect"
 
-	"toolbox/base/type_convert"
-	"toolbox/log"
+	"github.com/zer0131/toolbox/base/type_convert"
+	"github.com/zer0131/toolbox/log"
 )
 
 var (

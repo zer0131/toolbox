@@ -1,6 +1,6 @@
 
 # validate
-    import "toolbox/base/validate"
+    import "github.com/zer0131/toolbox/base/validate"
 
 
 # Demo

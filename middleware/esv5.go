@@ -20,8 +20,8 @@ import (
 
 	"gopkg.in/olivere/elastic.v5"
 
-	"toolbox"
-	"toolbox/stat"
+	"github.com/zer0131/toolbox"
+	"github.com/zer0131/toolbox/stat"
 )
 
 type ESV5 struct {

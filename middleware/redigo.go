@@ -1,12 +1,10 @@
 package middleware
 
 import (
-	"time"
-
 	"github.com/gomodule/redigo/redis"
-
-	"toolbox"
-	"toolbox/stat"
+	"github.com/zer0131/toolbox"
+	"github.com/zer0131/toolbox/stat"
+	"time"
 )
 
 // 包装redis.Pool不让上层用户直接使用第三方库中的redis，

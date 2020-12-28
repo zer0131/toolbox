@@ -5,7 +5,7 @@ import (
 	"net/url"
 	"testing"
 
-	"toolbox/log"
+	"github.com/zer0131/toolbox/log"
 )
 
 type TestCase struct {

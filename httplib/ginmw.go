@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"toolbox/ip"
-	"toolbox/log"
+	"github.com/zer0131/toolbox/ip"
+	"github.com/zer0131/toolbox/log"
 
 	"github.com/gin-gonic/gin"
 )

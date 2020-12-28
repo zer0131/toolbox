@@ -13,9 +13,9 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/jmoiron/sqlx"
 
-	"toolbox"
-	sflog "toolbox/log"
-	"toolbox/stat"
+	"github.com/zer0131/toolbox"
+	foxlog "github.com/zer0131/toolbox/log"
+	"github.com/zer0131/toolbox/stat"
 )
 
 var (
@@ -1082,7 +1082,7 @@ type LoggerCtx struct {
 }
 
 func (logger LoggerCtx) Print(values ...interface{}) {
-	sflog.Info(logger.ctx, logFormatter(values...)...)
+	foxlog.Info(logger.ctx, logFormatter(values...)...)
 }
 
 func (mysqlorm *MysqlORM) SetCtx(ctx context.Context) *gorm.DB {

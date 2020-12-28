@@ -15,9 +15,9 @@ import (
 	"strings"
 	"time"
 
-	"toolbox"
-	"toolbox/log"
-	"toolbox/stat"
+	"github.com/zer0131/toolbox"
+	"github.com/zer0131/toolbox/log"
+	"github.com/zer0131/toolbox/stat"
 )
 
 const (

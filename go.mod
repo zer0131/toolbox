@@ -1,4 +1,4 @@
-module toolbox
+module github.com/zer0131/toolbox
 
 go 1.14
 
