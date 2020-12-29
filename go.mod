@@ -22,9 +22,10 @@ require (
 	github.com/rcrowley/go-metrics v0.0.0-20200313005456-10cdbea86bc0
 	github.com/sirupsen/logrus v1.7.0
 	github.com/tebeka/strftime v0.1.5 // indirect
+	github.com/zer0131/logfox v1.2.1 // indirect
 	golang.org/x/net v0.0.0-20201209123823-ac852fbbde11
 	golang.org/x/sync v0.0.0-20201207232520-09787c993a3a
-	google.golang.org/grpc v1.29.1
+	google.golang.org/grpc v1.30.0
 	gopkg.in/olivere/elastic.v5 v5.0.86
 )
 
