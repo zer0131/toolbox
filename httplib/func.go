@@ -9,7 +9,7 @@ import (
 
 func Header2IncomingContext(header http.Header) context.Context {
 	m := make(map[string]string, len(header))
-	for k, _ := range header {
+	for k := range header {
 		m[k] = header.Get(k)
 	}
 	ctx := context.Background()

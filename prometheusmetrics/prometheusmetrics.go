@@ -73,7 +73,7 @@ func (c *PrometheusConfig) gaugeFromNameAndValue(name string, val float64) {
 			Name:      c.flattenKey(name),
 			Help:      name,
 		})
-		c.promRegistry.Register(g)
+		_ = c.promRegistry.Register(g)
 		c.gauges[key] = g
 	}
 	g.Set(val)
@@ -141,7 +141,7 @@ func (c *PrometheusConfig) histogramFromNameAndMetric(name string, goMetric inte
 
 func (c *PrometheusConfig) UpdatePrometheusMetrics() {
 	for _ = range time.Tick(c.FlushInterval) {
-		c.UpdatePrometheusMetricsOnce()
+		_ = c.UpdatePrometheusMetricsOnce()
 	}
 }
 

@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"math/rand"
 	"net"
 	"net/http"
 	"net/url"
@@ -51,24 +50,6 @@ type DpHttpClient interface {
 	PostWithHeader(ctx context.Context, api string, header map[string]string, data []byte) ([]byte, error)
 
 	Delete(ctx context.Context, api string) ([]byte, error)
-}
-
-// FIXME proxy需要解析功能
-type Addr string
-
-func (a Addr) String() string {
-	return string(a)
-}
-
-func (a Addr) Parse() (string, error) {
-	as := string(a)
-
-	if strings.HasPrefix(as, "list://") {
-		addrList := strings.Split(strings.TrimPrefix(as, "list://"), ",")
-		return fmt.Sprintf("http://%s", addrList[rand.Intn(len(addrList))]), nil
-	}
-
-	return as, nil
 }
 
 func (c *HttpClient) Get(ctx context.Context, api string) ([]byte, error) {
@@ -115,7 +96,9 @@ func (c *HttpClient) Get(ctx context.Context, api string) ([]byte, error) {
 	}
 	costTime = float32(time.Now().UnixNano()-startReqTime.UnixNano()) / 1e9
 	defer printReqLog(ctx, resp, reqErr, urlStr, costTime)
-	defer resp.Body.Close()
+	defer func() {
+		_ = resp.Body.Close()
+	}()
 
 	r, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -173,7 +156,9 @@ func (c *HttpClient) Post(ctx context.Context, api string, data []byte) ([]byte,
 	}
 	costTime = float32(time.Now().UnixNano()-startReqTime.UnixNano()) / 1e9
 	defer printReqLog(ctx, resp, reqErr, urlStr, costTime)
-	defer resp.Body.Close()
+	defer func() {
+		_ = resp.Body.Close()
+	}()
 	// bug: 每个resp.Body都要被读取空，否则不能建立长连接
 	r, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -218,7 +203,9 @@ func (c *HttpClient) RawPost(ctx context.Context, rawUrl string, data []byte) ([
 	}
 	costTime = float32(time.Now().UnixNano()-startReqTime.UnixNano()) / 1e9
 	defer printReqLog(ctx, resp, reqErr, rawUrl, costTime)
-	defer resp.Body.Close()
+	defer func() {
+		_ = resp.Body.Close()
+	}()
 	// bug: 每个resp.Body都要被读取空，否则不能建立长连接
 	r, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -258,7 +245,9 @@ func (c *HttpClient) RawPostForm(ctx context.Context, rawUrl string, values url.
 	if reqErr != nil {
 		return nil, reqErr
 	}
-	defer resp.Body.Close()
+	defer func() {
+		_ = resp.Body.Close()
+	}()
 
 	r, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -315,7 +304,9 @@ func (c *HttpClient) PostForm(ctx context.Context, api string, values url.Values
 	}
 	costTime = float32(time.Now().UnixNano()-startReqTime.UnixNano()) / 1e9
 	defer printReqLog(ctx, resp, reqErr, urlStr, costTime)
-	defer resp.Body.Close()
+	defer func() {
+		_ = resp.Body.Close()
+	}()
 
 	r, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -374,7 +365,9 @@ func (c *HttpClient) PostFile(ctx context.Context, api string, header map[string
 	}
 	costTime = float32(time.Now().UnixNano()-startReqTime.UnixNano()) / 1e9
 	defer printReqLog(ctx, resp, reqErr, urlStr, costTime)
-	defer resp.Body.Close()
+	defer func() {
+		_ = resp.Body.Close()
+	}()
 	// bug: 每个resp.Body都要被读取空，否则不能建立长连接
 	r, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -433,7 +426,9 @@ func (c *HttpClient) PostWithHeader(ctx context.Context, api string, header map[
 	}
 	costTime = float32(time.Now().UnixNano()-startReqTime.UnixNano()) / 1e9
 	defer printReqLog(ctx, resp, reqErr, urlStr, costTime)
-	defer resp.Body.Close()
+	defer func() {
+		_ = resp.Body.Close()
+	}()
 	// bug: 每个resp.Body都要被读取空，否则不能建立长连接
 	r, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -489,7 +484,9 @@ func (c *HttpClient) Delete(ctx context.Context, api string) ([]byte, error) {
 	}
 	costTime = float32(time.Now().UnixNano()-startReqTime.UnixNano()) / 1e9
 	defer printReqLog(ctx, resp, reqErr, urlStr, costTime)
-	defer resp.Body.Close()
+	defer func() {
+		_ = resp.Body.Close()
+	}()
 
 	r, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -515,92 +512,7 @@ func printReqLog(ctx context.Context, response *http.Response, err error, urlStr
 		protocol, requestUrl, method, err, urlStr, statusCode, cost)
 }
 
-type httpClientOptions struct {
-	// addr是否传递会改变httplib的行为
-	// 传递：当前传递server参数的方法都不工作
-	// 不传递：与上面相反
-	addr string
-
-	keepalive        time.Duration
-	timeout          time.Duration
-	idleTimeout      time.Duration
-	connTimeout      time.Duration
-	maxIdleConnCount int // net/http支持一个client对接的目的端是无限的，这是整体的限制
-
-	// 包装http.Client实现重试
-	retry int
-	proxy string
-}
-
-var defaultHttpClientOptions = httpClientOptions{
-	keepalive:        30 * time.Second,
-	timeout:          3 * time.Second,
-	idleTimeout:      30 * time.Second,
-	connTimeout:      300 * time.Millisecond,
-	maxIdleConnCount: 100,
-	retry:            1,
-}
-
-type httpClientOptionsFunc func(*httpClientOptions)
-
-func HttpWithAddr(d string) httpClientOptionsFunc {
-	return func(o *httpClientOptions) {
-		o.addr = d
-	}
-}
-
-func HttpWithKeepalive(d int64) httpClientOptionsFunc {
-	return func(o *httpClientOptions) {
-		o.keepalive = time.Duration(d) * time.Millisecond
-	}
-}
-
-func HttpWithTimeout(d int64) httpClientOptionsFunc {
-	return func(o *httpClientOptions) {
-		o.timeout = time.Duration(d) * time.Millisecond
-	}
-}
-
-func HttpWithIdleTimeout(d int64) httpClientOptionsFunc {
-	return func(o *httpClientOptions) {
-		o.idleTimeout = time.Duration(d) * time.Millisecond
-	}
-}
-
-func HttpWithConnTimeout(d int64) httpClientOptionsFunc {
-	return func(o *httpClientOptions) {
-		o.connTimeout = time.Duration(d) * time.Millisecond
-	}
-}
-
-func HttpWithMaxIdleConnCount(d int64) httpClientOptionsFunc {
-	return func(o *httpClientOptions) {
-		o.maxIdleConnCount = int(d)
-	}
-}
-
-func HttpWithRetry(d int64) httpClientOptionsFunc {
-	return func(o *httpClientOptions) {
-		if d > maxRetry {
-			d = maxRetry
-		}
-		if d < 0 {
-			d = 0
-		}
-		//加上默认次数一次
-		d += defaultRetry
-
-		o.retry = int(d)
-	}
-}
-
-func HttpWithProxy(d string) httpClientOptionsFunc {
-	return func(o *httpClientOptions) {
-		o.proxy = d
-	}
-}
-
-func InitHttpClient(opt ...httpClientOptionsFunc) (DpHttpClient, error) {
+func InitHttpClient(opt ...HttpClientOptionsFunc) (DpHttpClient, error) {
 	opts := defaultHttpClientOptions
 	for _, o := range opt {
 		o(&opts)

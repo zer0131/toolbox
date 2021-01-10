@@ -1,10 +1,10 @@
 package middleware
 
-// esv5的封装并没有是否用sfns，因为es每个节点内置sniff功能，用于探测整个集群node变化，
+// esv5的封装并没有是否用ns，因为es每个节点内置sniff功能，用于探测整个集群node变化，
 // 相当于sdk内置dns功能，只是不是domain name，而是ip:port。
-// 如果我们通过sfns接管这部分工作，缺点有两个：
-// 1. es和sfns服务之间node变化数据要打通，这块就有运维成本
-// 2. sdk不关心sniff得到的节点，只通过sfns sdk拿到的列表访问，不直观
+// 如果我们通过ns接管这部分工作，缺点有两个：
+// 1. es和ns服务之间node变化数据要打通，这块就有运维成本
+// 2. sdk不关心sniff得到的节点，只通过ns sdk拿到的列表访问，不直观
 // es和redis/mysql或者http不一样，后面这几种没有内置ns功能。
 
 import (
@@ -752,64 +752,7 @@ func (esv5 *ESV5) WaitForYellowStatus(timeout string) error {
 	return esv5.Client.WaitForYellowStatus(timeout)
 }
 
-type esv5Options struct {
-	addr string
-
-	// http配置
-	keepalive        time.Duration
-	timeout          time.Duration
-	idleTimeout      time.Duration
-	connTimeout      time.Duration
-	maxIdleConnCount int
-}
-
-var defaultESV5Options = esv5Options{
-	keepalive:        30 * time.Second,
-	timeout:          3 * time.Second,
-	idleTimeout:      30 * time.Second,
-	connTimeout:      300 * time.Millisecond,
-	maxIdleConnCount: 100,
-}
-
-type esv5OptionsFunc func(*esv5Options)
-
-func ESV5WithAddr(s string) esv5OptionsFunc {
-	return func(o *esv5Options) {
-		o.addr = s
-	}
-}
-
-func ESV5WithKeepalive(d int64) esv5OptionsFunc {
-	return func(o *esv5Options) {
-		o.keepalive = time.Duration(d) * time.Millisecond
-	}
-}
-
-func ESV5WithTimeout(d int64) esv5OptionsFunc {
-	return func(o *esv5Options) {
-		o.timeout = time.Duration(d) * time.Millisecond
-	}
-}
-
-func ESV5WithIdleTimeout(d int64) esv5OptionsFunc {
-	return func(o *esv5Options) {
-		o.idleTimeout = time.Duration(d) * time.Millisecond
-	}
-}
-
-func ESV5WithConnTimeout(d int64) esv5OptionsFunc {
-	return func(o *esv5Options) {
-		o.connTimeout = time.Duration(d) * time.Millisecond
-	}
-}
-
-func ESV5WithMaxIdleConnCount(d int64) esv5OptionsFunc {
-	return func(o *esv5Options) {
-		o.maxIdleConnCount = int(d)
-	}
-}
-
-func InitESV5(opt ...esv5OptionsFunc) (DpESV5, error) {
+func InitESV5(opt ...Esv5OptionsFunc) (DpESV5, error) {
 	opts := defaultESV5Options
 	for _, o := range opt {
 		o(&opts)

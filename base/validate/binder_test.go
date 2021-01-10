@@ -15,10 +15,10 @@ type TestCase struct {
 
 func TestNormalizeName(t *testing.T) {
 	tsts := []TestCase{
-		TestCase{`i_am_ok`, `IAmOk`},
-		TestCase{` i am ok`, ` i am ok`},
-		TestCase{`_i-am-ok `, `IAmOk `},
-		TestCase{`你是我的眼`, `你是我的眼`},
+		{`i_am_ok`, `IAmOk`},
+		{` i am ok`, ` i am ok`},
+		{`_i-am-ok `, `IAmOk `},
+		{`你是我的眼`, `你是我的眼`},
 	}
 	for _, tst := range tsts {
 		output := normalizeName(tst.Input)

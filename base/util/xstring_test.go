@@ -33,7 +33,7 @@ func TestStr2Bytes(t *testing.T) {
 	var s = "abcd.e"
 	var b = []byte(s)
 	tmp := Str2Bytes(s)
-	for i, _ := range tmp {
+	for i := range tmp {
 		if tmp[i] != b[i] {
 			t.Errorf("string to bytes error")
 		}

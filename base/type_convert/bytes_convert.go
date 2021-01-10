@@ -57,7 +57,7 @@ func bytesToUint8(bs []byte) (u8 uint8, err error) {
 	if l < 1 {
 		return 0, nil
 	}
-	return uint8(bs[0]), nil
+	return bs[0], nil
 }
 
 func bytesToUint16(bs []byte) (u16 uint16, err error) {

@@ -34,7 +34,7 @@ func CheckIpForGin() gin.HandlerFunc {
 		if !ip.CheckIp(ctx, c.Request.RemoteAddr) {
 			log.Warnf(ctx, "ip[%s] not allow", c.Request.RemoteAddr)
 			c.Writer.WriteHeader(http.StatusUnauthorized)
-			c.Writer.Write([]byte("IP is not allow!"))
+			_, _ = c.Writer.Write([]byte("IP is not allow!"))
 			return
 		}
 		c.Next()

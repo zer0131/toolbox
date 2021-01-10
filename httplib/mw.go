@@ -31,7 +31,7 @@ func CheckIp(next http.Handler) http.Handler {
 		if !ip.CheckIp(ctx, r.RemoteAddr) {
 			log.Warnf(ctx, "ip[%s] not allow", r.RemoteAddr)
 			w.WriteHeader(http.StatusUnauthorized)
-			w.Write([]byte("IP is not allow!"))
+			_, _ = w.Write([]byte("IP is not allow!"))
 			return
 		}
 

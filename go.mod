@@ -15,15 +15,13 @@ require (
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/lestrrat-go/strftime v1.0.3 // indirect
-	github.com/niean/go-metrics-lite v0.0.0-20151230091537-b5d30971b578 // indirect
-	github.com/niean/gotools v0.0.0-20151221085310-ff3f51fc5c60 // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.8.0
 	github.com/rcrowley/go-metrics v0.0.0-20200313005456-10cdbea86bc0
 	github.com/sirupsen/logrus v1.7.0
 	github.com/tebeka/strftime v0.1.5 // indirect
-	github.com/zer0131/logfox v1.2.1 // indirect
-	golang.org/x/net v0.0.0-20201209123823-ac852fbbde11
+	github.com/zer0131/logfox v1.2.1
+	golang.org/x/net v0.0.0-20201209123823-ac852fbbde11 // indirect
 	golang.org/x/sync v0.0.0-20201207232520-09787c993a3a
 	google.golang.org/grpc v1.30.0
 	gopkg.in/olivere/elastic.v5 v5.0.86

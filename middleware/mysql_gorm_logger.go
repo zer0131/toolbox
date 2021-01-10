@@ -1,8 +1,10 @@
 package middleware
 
 import (
+	"context"
 	"database/sql/driver"
 	"fmt"
+	"github.com/zer0131/toolbox/log"
 	"reflect"
 	"regexp"
 	"strconv"
@@ -17,15 +19,6 @@ var (
 
 var nowFunc = func() time.Time {
 	return time.Now()
-}
-
-func isPrintable(s string) bool {
-	for _, r := range s {
-		if !unicode.IsPrint(r) {
-			return false
-		}
-	}
-	return true
 }
 
 var logFormatter = func(values ...interface{}) (messages []interface{}) {
@@ -97,4 +90,21 @@ var logFormatter = func(values ...interface{}) (messages []interface{}) {
 		}
 	}
 	return
+}
+
+type LoggerCtx struct {
+	ctx context.Context
+}
+
+func (logger LoggerCtx) Print(values ...interface{}) {
+	log.Info(logger.ctx, logFormatter(values...)...)
+}
+
+func isPrintable(s string) bool {
+	for _, r := range s {
+		if !unicode.IsPrint(r) {
+			return false
+		}
+	}
+	return true
 }

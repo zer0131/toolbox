@@ -10,11 +10,11 @@ type IPTest struct {
 
 func TestStringToIPv4(t *testing.T) {
 	tests := []IPTest{
-		IPTest{"192.168.16.78", 3232239694, nil},
-		IPTest{"147.98.78.65", 2472693313, nil},
-		IPTest{"175.98.78.65", 2942455361, nil},
-		IPTest{"1298.45.78.5", 0, ErrBadFormat},
-		IPTest{"154.78", 0, ErrBadFormat},
+		{"192.168.16.78", 3232239694, nil},
+		{"147.98.78.65", 2472693313, nil},
+		{"175.98.78.65", 2942455361, nil},
+		{"1298.45.78.5", 0, ErrBadFormat},
+		{"154.78", 0, ErrBadFormat},
 	}
 	for _, tst := range tests {
 		tp, err := StringToIPv4(tst.StringValue)
