@@ -12,6 +12,7 @@ type mysqlOptions struct {
 	maxOpenConnCount           int64
 	parseTime                  bool
 	ormLogMode                 bool
+	slowThreshold              time.Duration
 }
 
 type MysqlOptionsFunc func(*mysqlOptions)
@@ -25,6 +26,7 @@ var defaultMysqlOptions = mysqlOptions{
 	maxOpenConnCount: 100,
 	parseTime:        true,
 	ormLogMode:       false,
+	slowThreshold:    time.Second * 10,
 }
 
 func MysqlAddr(s string) MysqlOptionsFunc {
@@ -95,5 +97,11 @@ func MysqlParseTime(s bool) MysqlOptionsFunc {
 func MysqlOrmLogMode(s bool) MysqlOptionsFunc {
 	return func(o *mysqlOptions) {
 		o.ormLogMode = s
+	}
+}
+
+func MysqlSlowThreshold(s int64) MysqlOptionsFunc {
+	return func(o *mysqlOptions) {
+		o.slowThreshold = time.Duration(s) * time.Second
 	}
 }

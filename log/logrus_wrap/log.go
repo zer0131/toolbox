@@ -63,39 +63,39 @@ var defaultLogOptions = logOptions{
 	expireDay: defaultFileWriterExpireDay,
 }
 
-type logOptionsFunc func(*logOptions)
+type LogOptionsFunc func(*logOptions)
 
-func WithPath(v string) logOptionsFunc {
+func WithPath(v string) LogOptionsFunc {
 	return func(o *logOptions) {
 		o.path = v
 	}
 }
 
-func WithApp(v string) logOptionsFunc {
+func WithApp(v string) LogOptionsFunc {
 	return func(o *logOptions) {
 		o.app = v
 	}
 }
 
-func WithExpireDay(v int) logOptionsFunc {
+func WithExpireDay(v int) LogOptionsFunc {
 	return func(o *logOptions) {
 		o.expireDay = v
 	}
 }
 
-func WithMaxLength(v int) logOptionsFunc {
+func WithMaxLength(v int) LogOptionsFunc {
 	return func(o *logOptions) {
 		o.maxLength = v
 	}
 }
 
-func WithLogLevel(l string) logOptionsFunc {
+func WithLogLevel(l string) LogOptionsFunc {
 	return func(o *logOptions) {
 		o.level = l
 	}
 }
 
-func NewLogger(opt ...logOptionsFunc) error {
+func NewLogger(opt ...LogOptionsFunc) error {
 	if logObj != nil {
 		fmt.Printf("[logrus] logObj is already initialized\n")
 		return nil
@@ -129,7 +129,7 @@ func NewLogger(opt ...logOptionsFunc) error {
 	return nil
 }
 
-func NewCustomLogger(opt ...logOptionsFunc) (*Logger, error) {
+func NewCustomLogger(opt ...LogOptionsFunc) (*Logger, error) {
 	opts := defaultLogOptions
 	for _, o := range opt {
 		o(&opts)

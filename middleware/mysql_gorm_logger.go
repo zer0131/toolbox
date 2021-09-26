@@ -30,6 +30,7 @@ var logFormatter = func(values ...interface{}) (messages []interface{}) {
 			currentTime     = " \033[33m[" + nowFunc().Format("2006-01-02 15:04:05") + "]\033[0m"
 			source          = fmt.Sprintf("\033[35m(%v)\033[0m", values[1])
 		)
+		formattedValues = make([]string, 0)
 
 		messages = []interface{}{source, currentTime}
 

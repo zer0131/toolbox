@@ -23,8 +23,8 @@ type Logger struct {
 }
 
 func GenLogId() string {
-	var t int64 = time.Now().UnixNano() / 1000000
-	var r int = rand.Intn(10000)
+	var t = time.Now().UnixNano() / 1000000
+	var r = rand.Intn(10000)
 	return fmt.Sprintf("%d%d", t, r)
 }
 
@@ -77,7 +77,7 @@ func InitV3(project string, logSize int) error {
 	return nil
 }
 
-func InitV4(opt ...logOptionsFunc) error {
+func InitV4(opt ...LogOptionsFunc) error {
 	opts := defaultLogOptions
 	for _, o := range opt {
 		o(&opts)
@@ -89,7 +89,7 @@ func InitV4(opt ...logOptionsFunc) error {
 	return nil
 }
 
-func NewCustomLogger(opt ...logOptionsFunc) (logger *Logger, err error) {
+func NewCustomLogger(opt ...LogOptionsFunc) (logger *Logger, err error) {
 	opts := defaultLogOptions
 	for _, o := range opt {
 		o(&opts)
@@ -119,33 +119,33 @@ var defaultLogOptions = logOptions{
 	maxLength: DefaultFileWriterMaxLength,
 }
 
-type logOptionsFunc func(*logOptions)
+type LogOptionsFunc func(*logOptions)
 
-func WithPath(v string) logOptionsFunc {
+func WithPath(v string) LogOptionsFunc {
 	return func(o *logOptions) {
 		o.path = v
 	}
 }
 
-func WithProject(v string) logOptionsFunc {
+func WithProject(v string) LogOptionsFunc {
 	return func(o *logOptions) {
 		o.app = v
 	}
 }
 
-func WithExpireDay(v int64) logOptionsFunc {
+func WithExpireDay(v int64) LogOptionsFunc {
 	return func(o *logOptions) {
 		o.expireDay = int(v)
 	}
 }
 
-func WithMaxLength(v int64) logOptionsFunc {
+func WithMaxLength(v int64) LogOptionsFunc {
 	return func(o *logOptions) {
 		o.maxLength = int(v)
 	}
 }
 
-func WithLogLevel(v string) logOptionsFunc {
+func WithLogLevel(v string) LogOptionsFunc {
 	return func(o *logOptions) {
 		o.level = v
 	}

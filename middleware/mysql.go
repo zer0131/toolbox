@@ -250,7 +250,7 @@ func (mysql *Mysql) Conn(ctx context.Context) (*sql.Conn, error) {
 	return mysql.DB.Conn(ctx)
 }
 
-func assemblyConfigAndRegisterDial(opt ...MysqlOptionsFunc) (*mysql.Config, *mysqlOptions, error) {
+func assemblyConfigAndRegisterDial(opt ...MysqlOptionsFunc) (*mysql.Config, mysqlOptions, error) {
 	opts := defaultMysqlOptions
 	for _, o := range opt {
 		o(&opts)
@@ -278,7 +278,7 @@ func assemblyConfigAndRegisterDial(opt ...MysqlOptionsFunc) (*mysql.Config, *mys
 	//
 	//mysql.RegisterDial(netName, foxns.DialForMysql)
 
-	return dbCfg, &opts, nil
+	return dbCfg, opts, nil
 }
 
 func InitMysql(opt ...MysqlOptionsFunc) (DpMysql, error) {
